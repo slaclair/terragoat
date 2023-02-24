@@ -11,6 +11,10 @@ resource "google_storage_bucket" "terragoat_website" {
     git_repo             = "terragoat"
     yor_trace            = "6b4a2e7a-c149-4082-91de-72ea665ce0ac"
   }
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = true
+  }
 }
 
 resource "google_storage_bucket_iam_binding" "allow_public_read" {
@@ -31,5 +35,9 @@ resource "google_storage_bucket" "internal_storage" {
     git_org              = "try-bridgecrew"
     git_repo             = "terragoat"
     yor_trace            = "8fb535d3-d75b-4557-8f1c-8260b7bc9230"
+  }
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = true
   }
 }
