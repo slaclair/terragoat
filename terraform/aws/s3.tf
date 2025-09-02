@@ -17,6 +17,7 @@ resource "aws_s3_bucket" "data" {
     git_org              = "try-bridgecrew"
     git_repo             = "terragoat"
     yor_trace            = "fc8c2d7a-1997-4fc2-95c1-277cba5c2a38"
+    Privacy              = ""
   }
   versioning {
     enabled = "${var.versioning_enabled}"
@@ -38,6 +39,7 @@ resource "aws_s3_bucket_object" "data_object" {
     git_org              = "try-bridgecrew"
     git_repo             = "terragoat"
     yor_trace            = "b77af90c-712d-4209-90ad-d46815ab3eb7"
+    Privacy              = ""
   }
 }
 
@@ -59,6 +61,7 @@ resource "aws_s3_bucket" "financials" {
     git_org              = "try-bridgecrew"
     git_repo             = "terragoat"
     yor_trace            = "cecbef60-a2ea-4710-9d45-b865340e6095"
+    Privacy              = ""
   }
 
 }
@@ -83,6 +86,7 @@ resource "aws_s3_bucket" "operations" {
     git_org              = "try-bridgecrew"
     git_repo             = "terragoat"
     yor_trace            = "e62dfbc0-cc44-408b-a26a-13938d22e2f0"
+    Privacy              = ""
   }
 
 }
@@ -108,6 +112,7 @@ resource "aws_s3_bucket" "data_science" {
     git_org              = "try-bridgecrew"
     git_repo             = "terragoat"
     yor_trace            = "25565a41-2c9e-45f2-a9e9-6c15b7afcfb6"
+    Privacy              = ""
   }
 }
 
@@ -137,6 +142,7 @@ resource "aws_s3_bucket" "logs" {
     git_org              = "try-bridgecrew"
     git_repo             = "terragoat"
     yor_trace            = "ce72f84f-4cb6-4f67-b540-54d7e998df19"
+    Privacy              = ""
   }
 }
 
@@ -153,10 +159,13 @@ resource "aws_s3_bucket" "destination" {
   versioning_configuration {
     status = "Enabled"
   }
+  tags = {
+    Privacy = ""
+  }
 }
 
 resource "aws_iam_role" "replication" {
-  name = "aws-iam-role"
+  name               = "aws-iam-role"
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -172,14 +181,17 @@ resource "aws_iam_role" "replication" {
   ]
 }
 POLICY
+  tags = {
+    Privacy = ""
+  }
 }
 
 resource "aws_s3_bucket_replication_configuration" "logs" {
   depends_on = [aws_s3_bucket_versioning.logs]
-  role   = aws_iam_role.logs.arn
-  bucket = aws_s3_bucket.logs.id
+  role       = aws_iam_role.logs.arn
+  bucket     = aws_s3_bucket.logs.id
   rule {
-    id = "foobar"
+    id     = "foobar"
     status = "Enabled"
     destination {
       bucket        = aws_s3_bucket.destination.arn
